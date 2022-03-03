@@ -1,0 +1,28 @@
+{
+  "name": "shop-project",
+  "version": "1.0.0",
+  "description": "Just trying some stuff",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whit33y/shop-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whit33y/shop-project/issues"
+  },
+  "homepage": "https://github.com/whit33y/shop-project#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "ejs-mate": "^3.0.0",
+    "express": "^4.17.3",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.2.4",
+    "path": "^0.12.7"
+  }
+}
