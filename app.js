@@ -38,3 +38,9 @@ app.get('/',(req,res)=>{
 app.get('/home',(req,res)=>{
     res.render('pages/home')
 })
+app.get('/products', (req,res)=>{
+    res.render('pages/products')
+})
+app.get('/about', (req,res)=>{
+    res.render('pages/about')
+})
