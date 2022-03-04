@@ -47,8 +47,9 @@ app.listen(3000, ()=>{
 app.get('/home',(req,res)=>{
     res.render('pages/home')
 })
-app.get('/products', (req,res)=>{
-    res.render('pages/products')
+app.get('/products', async(req,res)=>{
+    const products = await Product.find({})
+    res.render('pages/products', {products})
 })
 app.get('/products/createproduct', (req,res)=>{
     res.render('pages/subpages/createproduct')
@@ -64,14 +65,11 @@ app.get('/products/:id', async(req,res,next)=>{
     console.log(product)
     res.render('pages/subpages/showproduct', {product})
 })
-// router.get('/:id', wrapAsync(async(req,res)=>{
-//     const campground = await Campground.findById(req.params.id).populate('reviews');
-//     if(!campground){
-//         req.flash('error', 'Cannot find that campground!')
-//         return res.redirect('/campgrounds')
-//     }
-//     res.render('campgrounds/showcamp', {campground})
+// outer.get("/", wrapAsync(async(req,res)=>{
+//     const campgrounds = await Campground.find({}); //poczeka az znajdzie wszystkie campgroundy z bazy danych
+//     res.render('campgrounds/index', {campgrounds})
 // }))
+
 app.get('/about', (req,res)=>{
     res.render('pages/about')
 })

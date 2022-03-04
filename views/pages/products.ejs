@@ -1,3 +1,15 @@
 <% layout('./boilerplate')%>
 <p>Products</p>
 <a href="/products/createproduct">Crate product</a>
+<div class="container d-flex flex-wrap">
+<% for(let prod of products) { %>
+    <div class="col-4 ">
+    <div class="card mb-5" style="width: 18rem;">
+        <a href="/products/<%=prod.id%>"><img src="<%=prod.image%>" class="card-img-top" alt="..."></a>
+        <div class="card-body">
+          <p class="card-title"><%=prod.name%></p>
+        </div>
+      </div>
+    </div>
+<% } %>
+</div>
