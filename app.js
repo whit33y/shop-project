@@ -41,6 +41,9 @@ app.get('/home',(req,res)=>{
 app.get('/products', (req,res)=>{
     res.render('pages/products')
 })
+app.get('/products/createproduct', (req,res)=>{
+    res.render('pages/subpages/createproduct')
+})
 app.get('/about', (req,res)=>{
     res.render('pages/about')
 })
