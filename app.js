@@ -31,6 +31,8 @@ app.use(methodOverride('_method'));
 
 //ejs
 const ejsMate = require('ejs-mate'); 
+const product = require('./models/product');
+const { findById } = require('./models/product');
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -41,9 +43,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.listen(3000, ()=>{
     console.log('Listening on port 3000')
 })
-app.get('/',(req,res)=>{
-    res.send('XD DZIALA')
-})
+
 app.get('/home',(req,res)=>{
     res.render('pages/home')
 })
@@ -56,14 +56,21 @@ app.get('/products/createproduct', (req,res)=>{
 app.post('/products', async(req,res,next)=>{
     const product = new Product(req.body);
     await product.save()
-    res.redirect('products')
+    res.redirect(`products/${product._id}`)
 })
-// router.post('/', validateCampground, wrapAsync(async(req,res,next)=>{
-//     // if(!req.body.campground) throw new ExpressError('Invalid campground data', 400)
-//     const campground = new Campground(req.body.campground);
-//     await campground.save();
-//     req.flash('success', 'Succesfully made a new campgrund!')
-//     res.redirect(`campgrounds/${campground.id}`)
+app.get('/products/:id', async(req,res,next)=>{
+    const {id} = req.params
+    const product =  await Product.findById(id)
+    console.log(product)
+    res.render('pages/subpages/showproduct', {product})
+})
+// router.get('/:id', wrapAsync(async(req,res)=>{
+//     const campground = await Campground.findById(req.params.id).populate('reviews');
+//     if(!campground){
+//         req.flash('error', 'Cannot find that campground!')
+//         return res.redirect('/campgrounds')
+//     }
+//     res.render('campgrounds/showcamp', {campground})
 // }))
 app.get('/about', (req,res)=>{
     res.render('pages/about')
