@@ -45,7 +45,7 @@ app.listen(3000, ()=>{
 })
 
 app.get('/home', async(req,res)=>{
-    const products = await Product.find({}).limit(3)
+    const products = await Product.find({}).sort({name: -1}).limit(3)
     res.render('pages/home', {products})
 })
 app.get('/products', async(req,res)=>{
