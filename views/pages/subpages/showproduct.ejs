@@ -1,9 +1,14 @@
 <% layout('./boilerplate')%>
 <div class="card mb-3">
-    <img src="<%=product.image%>" class="card-img-top" alt="Macbook">
+    <img src="<%=product.image%>" class="card-img-top" >
     <div class="card-body">
       <h5 class="card-title"><%=product.name%></h5>
       <p class="card-text">Description: <span class="text-muted"><%=product.description%></span></p>
       <p class="card-text">Telephone number: <small class="text-muted"><%=product.number%></small></p>
     </div>
+    <form action="/products/<%=product.id%>?_method=DELETE" method="POST">
+      <button class="btn btn-danger">Delete product</button>
+    </form>
   </div>
+ 
+

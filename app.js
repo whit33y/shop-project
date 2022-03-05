@@ -65,10 +65,11 @@ app.get('/products/:id', async(req,res,next)=>{
     console.log(product)
     res.render('pages/subpages/showproduct', {product})
 })
-// outer.get("/", wrapAsync(async(req,res)=>{
-//     const campgrounds = await Campground.find({}); //poczeka az znajdzie wszystkie campgroundy z bazy danych
-//     res.render('campgrounds/index', {campgrounds})
-// }))
+app.delete('/products/:id', async(req,res)=>{
+    const {id} = req.params
+    await Product.findByIdAndDelete(id)
+    res.redirect('/products')
+})
 
 app.get('/about', (req,res)=>{
     res.render('pages/about')
