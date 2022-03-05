@@ -44,8 +44,9 @@ app.listen(3000, ()=>{
     console.log('Listening on port 3000')
 })
 
-app.get('/home',(req,res)=>{
-    res.render('pages/home')
+app.get('/home', async(req,res)=>{
+    const products = await Product.find({}).limit(3)
+    res.render('pages/home', {products})
 })
 app.get('/products', async(req,res)=>{
     const products = await Product.find({})

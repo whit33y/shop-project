@@ -1,2 +1,14 @@
 <% layout('./boilerplate')%>
-<p>Home</p>
+<div class="d-flex justify-content-center"><h1>Latest products</h1></div>
+<div class="container  flex-wrap ">
+    <% for(prod of products) { %>
+        <a href="/products/<%=prod.id%>">
+            <div class="card bg-dark text-white mb-3">
+            <img src="<%=prod.image%>" class="card-img">
+            <div class="card-img-overlay">
+              <h5 class="card-title"><%=prod.name%></h5>
+            </div>
+          </div>
+        </a>
+    <% } %>
+</div>
