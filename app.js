@@ -71,6 +71,12 @@ app.delete('/products/:id', async(req,res)=>{
     await Product.findByIdAndDelete(id)
     res.redirect('/products')
 })
+app.get('/login', (req,res)=>{
+    res.render('pages/subpages/login')
+})
+app.get('/register', (req,res)=>{
+    res.render('pages/subpages/register')
+})
 
 app.get('/about', (req,res)=>{
     res.render('pages/about')
