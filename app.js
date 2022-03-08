@@ -52,6 +52,16 @@ app.use(session({
 }))
 //session
 
+//pasport
+const passport = require('passport')
+const passportLocal = require('passport-local')
+//pasport
+
+//joi
+const {productSchema} = require('./schemas.js')
+//joi
+
+
 app.listen(3000, ()=>{
     console.log('Listening on port 3000')
 })
