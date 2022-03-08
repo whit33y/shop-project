@@ -38,14 +38,26 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 //ejs templaty, wplatanie jsa do html'a
 
-
+//session
+const session = require('express-session')
+app.use(session({
+    secret: 'weaksecretboi',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,//po 7 dnaich sie przedawnia
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}))
+//session
 
 app.listen(3000, ()=>{
     console.log('Listening on port 3000')
 })
 
 app.get('/home', async(req,res)=>{
-    const products = await Product.find({}).sort({name: -1}).limit(3)
+    const products = await Product.find({}).sort({name: -1}).limit(5)
     res.render('pages/home', {products})
 })
 app.get('/products', async(req,res)=>{
