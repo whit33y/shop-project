@@ -1,10 +1,15 @@
 //express
 const express = require('express');
 const app = express();
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.urlencoded());
 //express do szkieletów stronek
 
+//joi
+const ExpressError = require("./utils/ExpressError");
+const {productSchema} = require('./schemas.js')
+//joi
 //mongoose
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/shop-project')
@@ -57,9 +62,17 @@ const passport = require('passport')
 const passportLocal = require('passport-local')
 //pasport
 
-//joi
-// const {productSchema} = require('./schema.js')
-//joi
+//walidacja produktu
+// const validateProduct = (req,res,next) =>{
+//     const {error} = productSchema.validate(req.body)
+//     if(error){
+//         const message = error.details.map(el=>el.message).join(',')
+//         throw new ExpressError(message, 404)
+//     }else{
+//     next()
+//     }
+// }
+//walidacja produktu
 
 
 app.listen(3000, ()=>{
@@ -79,8 +92,17 @@ app.get('/products/createproduct', (req,res)=>{
 })
 app.post('/products', async(req,res,next)=>{
     const product = new Product(req.body);
-    await product.save()
-    res.redirect(`products/${product._id}`)
+    try {
+        const value = await productSchema.validateAsync({ name: product.name , description: product.description, image: product.image, number: product.number  });
+        await product.save()
+        res.redirect(`products/${product._id}`)
+    }
+    catch (err) { 
+        console.log(err)
+        res.redirect('/products')
+
+
+    }
 })
 app.get('/products/:id', async(req,res,next)=>{
     const {id} = req.params

@@ -1,9 +1,7 @@
-const Joi = require('Joi')
+const Joi  = require('joi')
 module.exports.productSchema = Joi.object({
-    product: Joi.object({
-        name: Joi.string().required(),
-        description: Joi.string().min(5).max(2000).required(),
+        name: Joi.string().min(3).max(50).required(),
+        description: Joi.string().min(3).max(1000).required(),
         image: Joi.string().required(),
-        number: Joi.number().min(9).max(9).required()
-    })
-})
+        number: Joi.number().min(100000000).max(999999999).required()
+}).required()
