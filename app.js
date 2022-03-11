@@ -58,7 +58,7 @@ const passportLocal = require('passport-local')
 //pasport
 
 //joi
-const {productSchema} = require('./schemas.js')
+// const {productSchema} = require('./schema.js')
 //joi
 
 
