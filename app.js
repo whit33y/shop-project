@@ -1,3 +1,8 @@
+//routes'y
+const productRoutes = require('./routes/products')
+
+//routes'y
+
 //express
 const express = require('express');
 const app = express();
@@ -96,52 +101,12 @@ app.use((req,res,next)=>{
     next()
 })
 
-
-
 //NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU 
 app.listen(3000, ()=>{
     console.log('Listening on port 3000')
 })
 //NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU 
-
-
-
-//PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY 
-app.get('/products', async(req,res)=>{
-    const products = await Product.find({})
-    res.render('pages/products', {products})
-})
-app.get('/products/createproduct', (req,res)=>{
-    res.render('pages/subpages/createproduct')
-})
-app.post('/products', async(req,res,next)=>{
-    const product = new Product(req.body);
-    try {
-        const value = await productSchema.validateAsync({ name: product.name , description: product.description, image: product.image, number: product.number  });
-        await product.save()
-        req.flash('success', 'Successfully made a new product!');
-        res.redirect(`products/${product._id}`)
-        // res.redirect()
-    }
-    catch (err) { 
-        console.log(err)
-        req.flash('error', 'Something went wrong(name must have min 3 chars, description must have min 3 chars max 1000, must have img link and correct telephone number)')
-        res.redirect('products')
-    }
-})
-app.get('/products/:id', async(req,res,next)=>{
-    const {id} = req.params
-    const product =  await Product.findById(id)
-    console.log(product)
-    res.render('pages/subpages/showproduct', {product})
-})
-app.delete('/products/:id', async(req,res)=>{
-    const {id} = req.params
-    await Product.findByIdAndDelete(id)
-    res.redirect('/products')
-})
-//PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY 
-
+app.use('/products', productRoutes)
 
 
 //USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
