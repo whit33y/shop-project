@@ -6,10 +6,14 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.urlencoded());
 //express do szkieletów stronek
 
+
+
 //joi
 const ExpressError = require("./utils/ExpressError");
 const {productSchema} = require('./schemas.js')
 //joi
+
+
 //mongoose
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/shop-project')
@@ -24,6 +28,7 @@ mongoose.connect('mongodb://localhost:27017/shop-project')
 //modele
 const Product = require('./models/product')
 //modele
+
 //path
 const path = require('path');
 app.use(express.static(path.join(__dirname,'public')))
@@ -57,6 +62,15 @@ app.use(session({
 }))
 //session
 
+//flash
+const flash = require('connect-flash')
+app.use(flash())
+//flash
+
+//wrap
+const wrapAsync = require('./utils/wrapAsync');
+//wrap
+
 //pasport
 const passport = require('passport')
 const passportLocal = require('passport-local')
@@ -75,14 +89,24 @@ const passportLocal = require('passport-local')
 //walidacja produktu
 
 
+app.use((req,res,next)=>{
+    // console.log(req.session)
+    res.locals.success=req.flash('success')
+    res.locals.error = req.flash('error')
+    next()
+})
+
+
+
+//NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU 
 app.listen(3000, ()=>{
     console.log('Listening on port 3000')
 })
+//NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU 
 
-app.get('/home', async(req,res)=>{
-    const products = await Product.find({}).sort({name: -1}).limit(5)
-    res.render('pages/home', {products})
-})
+
+
+//PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY 
 app.get('/products', async(req,res)=>{
     const products = await Product.find({})
     res.render('pages/products', {products})
@@ -95,13 +119,14 @@ app.post('/products', async(req,res,next)=>{
     try {
         const value = await productSchema.validateAsync({ name: product.name , description: product.description, image: product.image, number: product.number  });
         await product.save()
+        req.flash('success', 'Successfully made a new product!');
         res.redirect(`products/${product._id}`)
+        // res.redirect()
     }
     catch (err) { 
         console.log(err)
-        res.redirect('/products')
-
-
+        req.flash('error', 'Something went wrong(name must have min 3 chars, description must have min 3 chars max 1000, must have img link and correct telephone number)')
+        res.redirect('products')
     }
 })
 app.get('/products/:id', async(req,res,next)=>{
@@ -115,11 +140,26 @@ app.delete('/products/:id', async(req,res)=>{
     await Product.findByIdAndDelete(id)
     res.redirect('/products')
 })
+//PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY 
+
+
+
+//USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
 app.get('/login', (req,res)=>{
     res.render('pages/subpages/login')
 })
 app.get('/register', (req,res)=>{
     res.render('pages/subpages/register')
+})
+//USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
+
+
+
+//INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY 
+
+app.get('/home', async(req,res)=>{
+    const products = await Product.find({}).sort({name: -1}).limit(5)
+    res.render('pages/home', {products})
 })
 
 app.get('/about', (req,res)=>{

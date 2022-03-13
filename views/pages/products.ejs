@@ -1,4 +1,11 @@
 <% layout('./boilerplate')%>
+<% if (error && error.length) { %>
+  <div class="alert alert-danger alert-dismissable fade show" role="alert">
+      <%= error %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+  </div>
+  <% } %>
 <div class="d-flex justify-content-center"><h1>Products</h1></div>
 <a href="/products/createproduct" class="btn btn-primary mb-3" style="text-decoration: none;">Crate product</a>
 <div class="container d-flex flex-wrap">

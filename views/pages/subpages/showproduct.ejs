@@ -1,4 +1,11 @@
 <% layout('./boilerplate')%>
+<% if (success && success.length) { %>
+  <div class="alert alert-success alert-dismissable fade show" role="alert">
+      <%= success %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+  </div>
+  <% } %>
 <div class="card mb-3">
     <img src="<%=product.image%>" onerror="this.src='https://nowywilczak.pl/wp-content/uploads/2016/04/default-placeholder.png'" class="card-img-top" >
     <div class="card-body">
