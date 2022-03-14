@@ -1,22 +1,33 @@
 <% layout('./boilerplate')%>
-<div class="d-flex justify-content-center">
-    <h1>Login</h1>
-</div>
-<div class="container-fluid d-flex justify-content-center">
-    <form>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address <span class="text-muted">*</span></label>
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
-          <div id="email" class="form-text">We'll never share your email with anyone else.</div>    
+<% if (success && success.length) { %>
+    <div class="alert alert-success alert-dismissable fade show" role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+    <% } %>
+    <% if (error && error.length) { %>
+        <div class="alert alert-danger alert-dismissable fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password <span class="text-muted">*</span></label>
-          <input type="password" class="form-control" id="password" required>
+        <% } %>
+<h1>Login</h1>
+<form action="/login" method="POST" class="validated-form" novalidate>
+    <div class="mb-3">
+        <label for="username" class="form-label"></label>Username</label>
+        <input type="text" name="username" id="username" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
         </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
-</div>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label"></label>Password</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <button class="btn btn-success">Login</button>
+</form>

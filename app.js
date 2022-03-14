@@ -71,6 +71,13 @@ const wrapAsync = require('./utils/wrapAsync');
 //pasport
 const passport = require('passport')
 const passportLocal = require('passport-local')
+
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new passportLocal(User.authenticate()))
+
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 //pasport
 
 app.use((req,res,next)=>{
@@ -91,11 +98,6 @@ app.use('/products', productRoutes)
 
 //routsy
 //USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
-app.get('/login', (req,res)=>{
-    res.render('pages/subpages/login')
-})
-
-
 app.get('/register', (req,res)=>{
     res.render('pages/subpages/register')
 })
@@ -109,14 +111,32 @@ app.post('/register', async(req,res)=>{
                 return next(err)
             }
         console.log(registeredUser)
-        req.flash('success','Welcome to Yelp Camp!')
-        res.redirect('/campgrounds')
+        req.flash('success','Welcome to shopproject!')
+        res.redirect('/home')
         })
         
          }catch(e){
                 req.flash('error', e.message);
                 res.redirect('register')
          }
+})
+
+app.get('/login', (req,res)=>{
+    res.render('pages/subpages/login')
+})
+
+app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}),(req,res)=>{
+    console.log('LOGGED IN')
+    req.flash('success', 'Welcome back!')
+    const redirectUrl = req.session.returnTo || '/home';
+    delete req.session.redirectUrl
+    res.redirect(redirectUrl)
+})
+
+app.get('/logout', (req,res)=>{
+    req.logOut()
+    req.flash('succes', 'Goodbye!')
+    res.redirect('/pages/home')
 })
 //USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
 
