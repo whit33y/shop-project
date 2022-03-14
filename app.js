@@ -1,23 +1,14 @@
-//routes'y
-const productRoutes = require('./routes/products')
-
-//routes'y
-
 //express
 const express = require('express');
 const app = express();
-
 app.use(express.urlencoded({extended: true}));
 app.use(express.urlencoded());
 //express do szkieletów stronek
-
-
 
 //joi
 const ExpressError = require("./utils/ExpressError");
 const {productSchema} = require('./schemas.js')
 //joi
-
 
 //mongoose
 const mongoose = require('mongoose');
@@ -32,6 +23,7 @@ mongoose.connect('mongodb://localhost:27017/shop-project')
 
 //modele
 const Product = require('./models/product')
+const User = require('./models/user')
 //modele
 
 //path
@@ -81,19 +73,6 @@ const passport = require('passport')
 const passportLocal = require('passport-local')
 //pasport
 
-//walidacja produktu
-// const validateProduct = (req,res,next) =>{
-//     const {error} = productSchema.validate(req.body)
-//     if(error){
-//         const message = error.details.map(el=>el.message).join(',')
-//         throw new ExpressError(message, 404)
-//     }else{
-//     next()
-//     }
-// }
-//walidacja produktu
-
-
 app.use((req,res,next)=>{
     // console.log(req.session)
     res.locals.success=req.flash('success')
@@ -106,18 +85,40 @@ app.listen(3000, ()=>{
     console.log('Listening on port 3000')
 })
 //NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU 
+//routsy
+const productRoutes = require('./routes/products')
 app.use('/products', productRoutes)
 
-
+//routsy
 //USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
 app.get('/login', (req,res)=>{
     res.render('pages/subpages/login')
 })
+
+
 app.get('/register', (req,res)=>{
     res.render('pages/subpages/register')
 })
+app.post('/register', async(req,res)=>{
+    try{
+        const {email, username, password} = req.body;
+        const user = new User({email, username});
+        const registeredUser = await User.register(user, password);
+        req.login(registeredUser, err =>{
+            if(err){
+                return next(err)
+            }
+        console.log(registeredUser)
+        req.flash('success','Welcome to Yelp Camp!')
+        res.redirect('/campgrounds')
+        })
+        
+         }catch(e){
+                req.flash('error', e.message);
+                res.redirect('register')
+         }
+})
 //USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
-
 
 
 //INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY INNE ROUTY 

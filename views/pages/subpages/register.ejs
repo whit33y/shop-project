@@ -1,22 +1,26 @@
-<% layout('./boilerplate')%>
-<div class="d-flex justify-content-center">
-    <h1>Register</h1>
-</div>
-<div class="container-fluid d-flex justify-content-center">
-    <form>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address <span class="text-muted">*</span></label>
-          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
-          <div id="email" class="form-text">We'll never share your email with anyone else.</div>
+<% layout('./boilerplate')  %> 
+<h1>Register</h1>
+<form action="/register" method="POST" class="validated-form" novalidate>
+    <div class="mb-3">
+        <label for="username" class="form-label"></label>Username</label>
+        <input type="text" name="username" id="username" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password <span class="text-muted">*</span></label>
-          <input type="password" class="form-control" id="password" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label"></label>Email</label>
+        <input type="email" name="email" id="email" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
         </div>
-        <div class="mb-3">
-          <label for="passwordCheck" class="form-label">Confirm Password <span class="text-muted">*</span></label>
-          <input type="passwordCheck" class="form-control" id="passwordCheck" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label"></label>Password</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
-      </form>
-</div>
+    </div>
+    <button class="btn btn-success">Register</button>
+</form>
