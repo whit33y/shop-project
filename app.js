@@ -87,6 +87,8 @@ app.use((req,res,next)=>{
     res.locals.error = req.flash('error')
     next()
 })
+const {isLoggedIn} = require('./middleware')
+
 
 //NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU NASLUCHIWANIE PORTU 
 app.listen(3000, ()=>{

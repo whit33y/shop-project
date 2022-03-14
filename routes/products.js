@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const Product = require('../models/product')
 const {productSchema} = require('../schemas.js')
+const {isLoggedIn} = require('../middleware')
 
 
 //PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY PRODUKTOWE ROUTY 
@@ -9,10 +10,10 @@ router.get('/', async(req,res)=>{
     const products = await Product.find({})
     res.render('pages/products', {products})
 })
-router.get('/createproduct', (req,res)=>{
+router.get('/createproduct', isLoggedIn, (req,res)=>{
     res.render('pages/subpages/createproduct')
 })
-router.post('/', async(req,res,next)=>{
+router.post('/', isLoggedIn,  async(req,res,next)=>{
     const product = new Product(req.body);
     try {
         const value = await productSchema.validateAsync({ name: product.name , description: product.description, image: product.image, number: product.number  });
@@ -33,7 +34,7 @@ router.get('/:id', async(req,res,next)=>{
     console.log(product)
     res.render('pages/subpages/showproduct', {product})
 })
-router.delete('/:id', async(req,res)=>{
+router.delete('/:id', isLoggedIn, async(req,res)=>{
     const {id} = req.params
     await Product.findByIdAndDelete(id)
     res.redirect('/products')
