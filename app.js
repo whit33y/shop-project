@@ -81,7 +81,8 @@ passport.deserializeUser(User.deserializeUser())
 //pasport
 
 app.use((req,res,next)=>{
-    // console.log(req.session)
+    console.log(req.session)
+    res.locals.currentUser = req.user;
     res.locals.success=req.flash('success')
     res.locals.error = req.flash('error')
     next()
@@ -136,7 +137,7 @@ app.post('/login', passport.authenticate('local', {failureFlash: true, failureRe
 app.get('/logout', (req,res)=>{
     req.logOut()
     req.flash('succes', 'Goodbye!')
-    res.redirect('/pages/home')
+    res.redirect('/home')
 })
 //USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY USEROWE ROUTY 
 
