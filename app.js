@@ -154,3 +154,12 @@ app.get('/home', async(req,res)=>{
 app.get('/about', (req,res)=>{
     res.render('pages/about')
 })
+app.all('*', (req,res,next)=>{
+    next(new ExpressError('Page not found', 404))
+})
+
+app.use((err,req,res,next)=>{
+    if(!err.message) err.message = 'Oh no something went wrong!'
+    const {statusCode = 500, message = 'Something went wrong'} = err
+    res.status(statusCode).render('parts/errors', {err})
+})
